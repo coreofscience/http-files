@@ -1,6 +1,11 @@
 import falcon
 
 
+class HealthCheckResource(object):
+    def on_get(self, req, res):
+        res.body = "pong"
+
+
 class FilesResource(object):
     def __init__(self, url):
         self.url = url
@@ -13,5 +18,6 @@ class FilesResource(object):
 
 def app():
     api = falcon.API()
-    api.add_route("/{filename}", FilesResource("/storage/"))
+    api.add_route("/ping", HealthCheckResource())
+    api.add_route("/file/{filename}", FilesResource("/storage/"))
     return api
